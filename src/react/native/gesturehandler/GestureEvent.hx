@@ -1,74 +1,46 @@
 package react.native.gesturehandler;
 
+import react.SyntheticEvent;
+
 @:enum
-abstract Directions(Int) to Int {
-    var RIGHT = 1;
-    var LEFT = 2;
-    var UP = 4;
-    var DOWN = 8;
+@:jsRequire('react-native-gesture-handler', 'Direction')
+extern abstract Directions(Int) to Int {
+    @:native('RIGHT') var Right;
+    @:native('LEFT') var Left;
+    @:native('UP') var Up;
+    @:native('DOWN') var Down;
 }
 
 @:enum
-abstract State(Int) to Int {
-    var UNDETERMINED = 0;
-    var FAILED = 1;
-    var BEGAN = 2;
-    var CANCELLED = 3;
-    var ACTIVE = 4;
-    var END = 5;
+@:jsRequire('react-native-gesture-handler', 'State')
+extern abstract State(Int) to Int {
+    @:native('UNDETERMINED') var Undetermined;
+    @:native('FAILED') var Failed;
+    @:native('BEGAN') var Began;
+    @:native('CANCELLED') var Cancelled;
+    @:native('ACTIVE') var Active;
+    @:native('END') var End;
 }
 
-/* STATE CHANGE EVENTS */
-
-typedef GestureHandlerGestureEventNativeEvent = {
+typedef GestureEvent = {
     handlerTag: Float,
     numberOfPointers: Float,
 	state: State,
 }
 
-typedef GestureHandlerStateChangeNativeEvent = {
-    handlerTag: Float,
-    numberOfPointers: Float,
-    state: State,
+typedef StateChangeEvent = {
+    > GestureEvent,
     oldState: State,
 }
 
-class GestureHandlerStateChangeEvent<T:(GestureHandlerStateChangeNativeEvent)>  {
-    public var nativeEvent: T;
-}
-
-
-class GestureHandlerGestureEvent<T:(GestureHandlerGestureEventNativeEvent)>  {
-    public var nativeEvent: T;
-}
-
-class GestureHandlerGestureNativeEvent extends GestureHandlerGestureEvent<GestureHandlerGestureEventNativeEvent> {}
-
-
-typedef NativeViewGestureHandlerStateChangeEventExtra = {
-    > GestureHandlerStateChangeNativeEvent,
-    pointerInside: Bool,
-}
-
-typedef NativeViewGestureHandlerGestureEventExtra = {
-    > GestureHandlerGestureEventNativeEvent,
-    pointerInside: Bool,
-}
-
-class NativeViewGestureHandlerStateChangeEvent extends GestureHandlerStateChangeEvent<NativeViewGestureHandlerStateChangeEventExtra> {}
-
-class NativeViewGestureHandlerGestureEvent extends GestureHandlerGestureEvent<NativeViewGestureHandlerGestureEventExtra> {}
-
-typedef TapGestureHandlerEventExtra = {
-    > GestureHandlerStateChangeNativeEvent,
+typedef TapData = {
     x: Float,
     y: Float,
     absoluteX: Float,
     absoluteY: Float,
 }
 
-typedef ForceTouchGestureHandlerEventExtra = {
-    > GestureHandlerStateChangeNativeEvent,
+typedef ForceTouchData = {
     x: Float,
     y: Float,
     absoluteX: Float,
@@ -76,26 +48,14 @@ typedef ForceTouchGestureHandlerEventExtra = {
     force: Float,
 }
 
-class TapGestureHandlerStateChangeEvent extends GestureHandlerStateChangeEvent<TapGestureHandlerEventExtra> {}
-
-class TapGestureHandlerGestureEvent extends GestureHandlerStateChangeEvent<TapGestureHandlerEventExtra> {}
-
-class ForceTouchGestureHandlerGestureEvent extends GestureHandlerStateChangeEvent<ForceTouchGestureHandlerEventExtra> {}
-
-class LongPressGestureHandlerStateChangeEvent extends GestureHandlerStateChangeEvent<LongPressGestureHandlerEventExtra> {}
-
-class ForceTouchGestureHandlerStateChangeEvent extends GestureHandlerStateChangeEvent<ForceTouchGestureHandlerEventExtra> {}
-
-typedef LongPressGestureHandlerEventExtra = {
-    > GestureHandlerStateChangeNativeEvent,
+typedef LongPressData = {
     x: Float,
     y: Float,
     absoluteX: Float,
     absoluteY: Float,
 }
 
-typedef PanGestureHandlerEventExtra = {
-    > GestureHandlerStateChangeNativeEvent,
+typedef PanData = {
     x: Float,
     y: Float,
     absoluteX: Float,
@@ -106,44 +66,59 @@ typedef PanGestureHandlerEventExtra = {
     velocityY: Float,
 }
 
-class PanGestureHandlerStateChangeEvent extends GestureHandlerStateChangeEvent<PanGestureHandlerEventExtra> {}
-
-class PanGestureHandlerGestureEvent extends GestureHandlerGestureEvent<PanGestureHandlerEventExtra> {}
-
-
-typedef PinchGestureHandlerEventExtra = {
-    > GestureHandlerStateChangeNativeEvent,
+typedef PinchData = {
     scale: Float,
     focalX: Float,
     focalY: Float,
     velocity: Float,
 }
 
-class PinchGestureHandlerStateChangeEvent extends GestureHandlerStateChangeEvent<PinchGestureHandlerEventExtra> {}
-class PinchGestureHandlerGestureEvent extends GestureHandlerGestureEvent<PinchGestureHandlerEventExtra> {}
-
-typedef RotationGestureHandlerEventExtra = {
-    > GestureHandlerStateChangeNativeEvent,
+typedef RotationData = {
     rotation: Float,
     anchorX: Float,
     anchorY: Float,
     velocity: Float,
 }
 
-class RotationGestureHandlerStateChangeEvent extends GestureHandlerStateChangeEvent<RotationGestureHandlerEventExtra> {}
-class RotationGestureHandlerGestureEvent extends GestureHandlerGestureEvent<RotationGestureHandlerEventExtra> {}
-
-
-typedef FlingGestureHandlerEventExtra = {
-    > GestureHandlerStateChangeNativeEvent,
+typedef FlingData = {
     x: Float,
     y: Float,
     absoluteX: Float,
     absoluteY: Float,
 }
 
-class FlingGestureHandlerStateChangeEvent extends GestureHandlerStateChangeEvent<FlingGestureHandlerEventExtra> {}
-class FlingGestureHandlerGestureEvent extends GestureHandlerGestureEvent<GestureHandlerGestureEventNativeEvent> {}
+
+typedef NativeViewData = {
+    pointerInside: Bool,
+}
+
+typedef TapStateChangeEvent = SyntheticEvent<{ >TapData, >StateChangeEvent, }>;
+typedef TapGestureEvent = SyntheticEvent<{ >TapData, >GestureEvent, }>;
+
+typedef ForceTouchStateChangeEvent = SyntheticEvent<{ >ForceTouchData, >StateChangeEvent, }>;
+typedef ForceTouchGestureEvent = SyntheticEvent<{ >ForceTouchData, >GestureEvent, }>;
+
+typedef LongPressStateChangeEvent = SyntheticEvent<{ >LongPressData, >StateChangeEvent, }>;
+typedef LongPressGestureEvent = SyntheticEvent<{ >LongPressData, >GestureEvent, }>;
+
+typedef PanStateChangeEvent = SyntheticEvent<{ >PanData, >StateChangeEvent, }>;
+typedef PanGestureEvent = SyntheticEvent<{ >PanData, >GestureEvent, }>;
+
+typedef PinchStateChangeEvent = SyntheticEvent<{ >PinchData, >StateChangeEvent, }>;
+typedef PinchGestureEvent = SyntheticEvent<{ >PinchData, >GestureEvent, }>;
+
+typedef RotationStateChangeEvent = SyntheticEvent<{ >RotationData, >StateChangeEvent, }>;
+typedef RotationGestureEvent = SyntheticEvent<{ >RotationData, >GestureEvent, }>;
+
+typedef FlingStateChangeEvent = SyntheticEvent<{ >FlingData, >StateChangeEvent, }>;
+typedef FlingGestureEvent = SyntheticEvent<{ >FlingData, >GestureEvent, }>;
+
+typedef NativeViewStateChangeEvent = SyntheticEvent<{ >NativeViewData, >StateChangeEvent, }>;
+typedef NativeViewGestureEvent = SyntheticEvent<{ >NativeViewData, >GestureEvent, }>;
 
 
 //TODO complete missing classes.. I think there's more
+
+// class NativeViewGestureHandlerStateChangeEvent extends GestureHandlerStateChangeEvent<NativeViewGestureHandlerStateChangeEventExtra> {}
+
+// class NativeViewGestureHandlerGestureEvent extends GestureHandlerGestureEvent<NativeViewGestureHandlerGestureEventExtra> {}

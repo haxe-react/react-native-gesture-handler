@@ -3,6 +3,7 @@ package react.native.gesturehandler;
 import haxe.extern.EitherType;
 import react.ReactRef;
 import react.ReactComponent;
+import react.BaseProps;
 import react.native.component.props.ViewStyle;
 import react.native.gesturehandler.GestureEvent;
 
@@ -11,6 +12,7 @@ private typedef EitherData<T> = EitherType<T, Array<T>>;
 /* GESTURE HANDLERS PROPERTIES */
 
 typedef GestureHandlerProperties = {
+    > BasePropsWithChild,
     ? id: String,
     ? enabled: Bool,
     ? waitFor: ReactRef<EitherData<Any>>,
@@ -30,8 +32,8 @@ typedef NativeViewGestureHandlerProperties = {
     > GestureHandlerProperties,
     ? shouldActivateOnStart: Bool,
     ? disallowInterruption: Bool,
-    ? onGestureEvent: NativeViewGestureHandlerGestureEvent -> Void,
-    ? onHandlerStateChange:  NativeViewGestureHandlerStateChangeEvent -> Void,
+    ? onGestureEvent: NativeViewGestureEvent -> Void,
+    ? onHandlerStateChange:  NativeViewStateChangeEvent -> Void,
 }
 
 typedef TapGestureHandlerProperties = {
@@ -43,8 +45,8 @@ typedef TapGestureHandlerProperties = {
     ? maxDeltaX: Float,
     ? maxDeltaY: Float,
     ? maxDist: Float,
-    ? onGestureEvent: TapGestureHandlerGestureEvent -> Void,
-    ? onHandlerStateChange: TapGestureHandlerStateChangeEvent -> Void,
+    ? onGestureEvent: TapGestureEvent -> Void,
+    ? onHandlerStateChange: TapStateChangeEvent -> Void,
 }
 
 typedef ForceTouchGestureHandlerProperties = {
@@ -52,16 +54,16 @@ typedef ForceTouchGestureHandlerProperties = {
     ? minForce: Float,
     ? maxForce: Float,
     ? feedbackOnActivation: Bool,
-    ? onGestureEvent: ForceTouchGestureHandlerGestureEvent -> Void,
-    ? onHandlerStateChange: ForceTouchGestureHandlerStateChangeEvent -> Void,
+    ? onGestureEvent: ForceTouchGestureEvent -> Void,
+    ? onHandlerStateChange: ForceTouchStateChangeEvent -> Void,
   }
 
 typedef LongPressGestureHandlerProperties = {
     > GestureHandlerProperties,
     ? minDurationMs: Float,
     ? maxDist: Float,
-    ? onGestureEvent: GestureHandlerGestureNativeEvent -> Void,
-    ? onHandlerStateChange: LongPressGestureHandlerStateChangeEvent -> Void,
+    ? onGestureEvent: LongPressGestureEvent -> Void,
+    ? onHandlerStateChange: LongPressStateChangeEvent -> Void,
   }
 
 typedef PanGestureHandlerProperties = {
@@ -89,54 +91,54 @@ typedef PanGestureHandlerProperties = {
     ? minPointers: Float,
     ? maxPointers: Float,
     ? avgTouches: Bool,
-    ? onGestureEvent: PanGestureHandlerGestureEvent -> Void,
-    ? onHandlerStateChange: PanGestureHandlerStateChangeEvent -> Void,
+    ? onGestureEvent: PanGestureEvent -> Void,
+    ? onHandlerStateChange: PanStateChangeEvent -> Void,
 }
 
 typedef PinchGestureHandlerProperties = {
     > GestureHandlerProperties,
-    ? onGestureEvent: PinchGestureHandlerGestureEvent -> Void,
-    ? onHandlerStateChange: PinchGestureHandlerStateChangeEvent -> Void,
+    ? onGestureEvent: PinchGestureEvent -> Void,
+    ? onHandlerStateChange: PinchStateChangeEvent -> Void,
 }
 
 typedef RotationGestureHandlerProperties = {
     > GestureHandlerProperties,
-    ? onGestureEvent: RotationGestureHandlerGestureEvent -> Void,
-    ? onHandlerStateChange: RotationGestureHandlerStateChangeEvent->Void,
+    ? onGestureEvent: RotationGestureEvent -> Void,
+    ? onHandlerStateChange: RotationStateChangeEvent->Void,
 }
 
 typedef FlingGestureHandlerProperties = {
     > GestureHandlerProperties,
     ? direction: Float,
     ? FloatOfPointers: Float,
-    ? onGestureEvent: FlingGestureHandlerGestureEvent -> Void,
-    ? onHandlerStateChange: FlingGestureHandlerStateChangeEvent -> Void,
+    ? onGestureEvent: FlingGestureEvent -> Void,
+    ? onHandlerStateChange: FlingStateChangeEvent -> Void,
 }
 
 // GESTURE HANDLERS CLASSES
 
-@:jsRequire('react-native-gesture-handler', 'GestureHandler')
+@:jsRequire('react-native-gesture-handler', 'NativeViewGestureHandler')
 extern class NativeViewGestureHandler extends ReactComponentOfProps<NativeViewGestureHandlerProperties> {}
 
-@:jsRequire('react-native-gesture-handler', 'GestureHandler')
+@:jsRequire('react-native-gesture-handler', 'TapGestureHandler')
 extern class TapGestureHandler extends ReactComponentOfProps<TapGestureHandlerProperties> {}
 
-@:jsRequire('react-native-gesture-handler', 'GestureHandler')
+@:jsRequire('react-native-gesture-handler', 'LongPressGestureHandler')
 extern class LongPressGestureHandler extends ReactComponentOfProps<LongPressGestureHandlerProperties> {}
 
-@:jsRequire('react-native-gesture-handler', 'GestureHandler')
+@:jsRequire('react-native-gesture-handler', 'PanGestureHandler')
 extern class PanGestureHandler extends ReactComponentOfProps<PanGestureHandlerProperties> {}
 
-@:jsRequire('react-native-gesture-handler', 'GestureHandler')
+@:jsRequire('react-native-gesture-handler', 'PinchGestureHandler')
 extern class PinchGestureHandler extends ReactComponentOfProps<PinchGestureHandlerProperties> {}
 
-@:jsRequire('react-native-gesture-handler', 'GestureHandler')
+@:jsRequire('react-native-gesture-handler', 'RotationGestureHandler')
 extern class RotationGestureHandler extends ReactComponentOfProps<RotationGestureHandlerProperties> {}
 
-@:jsRequire('react-native-gesture-handler', 'GestureHandler')
+@:jsRequire('react-native-gesture-handler', 'FlingGestureHandler')
 extern class FlingGestureHandler extends ReactComponentOfProps<FlingGestureHandlerProperties> {}
 
-@:jsRequire('react-native-gesture-handler', 'GestureHandler')
+@:jsRequire('react-native-gesture-handler', 'ForceTouchGestureHandler')
 extern class ForceTouchGestureHandler extends ReactComponentOfProps<ForceTouchGestureHandlerProperties> {}
 
 
